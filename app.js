@@ -12,10 +12,6 @@ let userInRoomDiv = (username, color) => `
 </div>
 `
 
-const init = () => {
-    updateUsers()
-}
-
 // Récupérer une couleur aléatoire
 const getRandomColor = () => Math.floor(Math.random() * 15)
 
@@ -104,4 +100,6 @@ const leave = () => {
 
 setInterval(() => {
     updateUsers()
-}, 1000);
+}, 1000)
+
+updateUsers()
