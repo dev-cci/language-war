@@ -12,3 +12,9 @@ let userInRoomDiv = `
 </div>
 `
 
+// Récupérer la liste des utilisateurs en bdd et mettre à jour la page
+const getUsers = () => fetch('./update.php')
+    .then(r => r.json())
+    .then(users => users)
+
+getUsers()
