@@ -1,20 +1,107 @@
 const colors = ['blue', 'red', 'yellow', 'green', 'orange', 'emerald', 'lime', 'teal', 'cyan', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
 
-let userInLobbyDiv = `
-<div class="user w-20 h-20 m-4 rounded-full border-4 text-xs border-white flex items-center justify-center text-white bg-blue-900">
-    <span>USERNAME</span>
+let userInLobbyDiv = (username, color) => `
+<div class="user w-20 h-20 m-4 rounded-full border-4 text-xs border-white flex items-center justify-center text-white bg-${colors[color]}-900">
+    <span>${username.toUpperCase()}</span>
 </div>
 `
 
-let userInRoomDiv = `
-<div class="user w-32 h-32 m-6 rounded-full border-4 text-xl border-white flex items-center justify-center text-white bg-blue-900 bg-">
-    <span>USERNAME</span>
+let userInRoomDiv = (username, color) => `
+<div class="user w-32 h-32 m-6 rounded-full border-4 text-xl border-white flex items-center justify-center text-white bg-${colors[color]}-900">
+    <span>${username.toUpperCase()}</span>
 </div>
 `
 
-// Récupérer la liste des utilisateurs en bdd et mettre à jour la page
+const init = () => {
+    updateUsers()
+}
+
+// Récupérer une couleur aléatoire
+const getRandomColor = () => Math.floor(Math.random() * 15)
+
+// Récupérer la liste des utilisateurs en bdd
 const getUsers = () => fetch('./update.php')
     .then(r => r.json())
     .then(users => users)
 
-getUsers()
+// Envoyer ma position
+const sendUserData = async (username, position) => {
+    let userData = new FormData()
+    userData.append('username', username)
+    userData.append('position', position)
+    userData.append('color', getRandomColor())
+
+    await fetch('./send_user_data.php', {
+        method: 'POST',
+        body: userData
+    })
+
+    updateUsers()
+}
+
+// Mettre à jour la page
+const updateUsers = async () => {
+    const users = await getUsers()
+
+    const lobby = document.querySelector('.lobby')
+    lobby.innerHTML = ''
+    users.filter(user => user.position == 0).forEach(user => lobby.innerHTML += userInLobbyDiv(user.name, user.color))
+
+    const roomPHP = document.querySelector('.zone-php')
+    roomPHP.innerHTML = ''
+    users.filter(user => user.position == 1).forEach(user => roomPHP.innerHTML += userInRoomDiv(user.name, user.color))
+
+    const roomJS = document.querySelector('.zone-js')
+    roomJS.innerHTML = ''
+    users.filter(user => user.position == 2).forEach(user => roomJS.innerHTML += userInRoomDiv(user.name, user.color))
+}
+
+// Rejoindre la partie
+const joinLobby = () => {
+    const userInput = document.querySelector('input#nickname').value
+
+    if (userInput) {
+        sendUserData(userInput, 0)
+    }
+    else {
+        console.log("no username")
+    }
+}
+
+// Rejoindre la room PHP
+const joinRoomPHP = () => {
+    const userInput = document.querySelector('input#nickname').value
+
+    if (userInput) {
+        sendUserData(userInput, 1)
+    }
+    else {
+        console.log("no username")
+    }
+}
+
+// Rejoindre la room JS
+const joinRoomJS = () => {
+    const userInput = document.querySelector('input#nickname').value
+
+    if (userInput) {
+        sendUserData(userInput, 2)
+    }
+    else {
+        console.log("no username")
+    }
+}
+
+// Quitter le jeu
+const leave = () => {
+    const userInput = document.querySelector('input#nickname')
+
+    sendUserData(userInput.value, -1)
+
+    userInput.value = ''
+
+}
+
+setInterval(() => {
+    updateUsers()
+}, 1000);
