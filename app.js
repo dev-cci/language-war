@@ -12,3 +12,26 @@ let userInRoomDiv = `
 </div>
 `
 
+// Récupérer la liste des utilisateurs en bdd
+const getUsers = () => fetch('./update.php')
+    .then(r => r.json())
+    .then(users => users)
+
+// * Même fonction qu'au dessus, différente syntaxe
+// function getUsers() {
+    //     return fetch('./update.php')
+    //     .then(response => {
+        //         return response.json()
+        //     })
+        //     .then(function(users) {
+            //         return users
+            //     })
+            // }
+
+// * Même fonction qu'au dessus, différente syntaxe
+// async function getUsers() {
+//     const response = await fetch('./update.php')
+//     const users = await response.json()
+//     return users
+// }
+
