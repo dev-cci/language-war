@@ -12,6 +12,9 @@ let userInRoomDiv = (username, color) => `
 </div>
 `
 
+// Récupérer une couleur aléatoire
+const getRandomColor = () => Math.floor(Math.random() * 15)
+
 // Récupérer la liste des utilisateurs en bdd
 const getUsers = () => fetch('./update.php')
     .then(r => r.json())
