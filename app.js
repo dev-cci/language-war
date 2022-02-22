@@ -35,3 +35,7 @@ const getUsers = () => fetch('./update.php')
 //     return users
 // }
 
+// Mettre à jour la page
+const updateUsers = async () => {
+    const users = await getUsers()
+}
