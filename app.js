@@ -37,20 +37,20 @@ const sendUserData = async (username, position) => {
 
 // Mettre à jour la page
 const updateUsers = async () => {
-    const users = await getUsers()
-
     const lobby = document.querySelector('.lobby')
     const roomPHP = document.querySelector('.zone-php')
     const roomJS = document.querySelector('.zone-js')
 
-    lobby.innerHTML = ''
-    users.filter(user => user.position == 0).forEach(user => lobby.innerHTML += userInLobbyDiv(user.name, user.color))
+    const users = await getUsers()
 
-    roomPHP.innerHTML = ''
-    users.filter(user => user.position == 1).forEach(user => roomPHP.innerHTML += userInRoomDiv(user.name, user.color))
+    displayUsers(users, lobby, 0, userInLobbyDiv);
+    displayUsers(users, roomPHP, 1, userInRoomDiv);
+    displayUsers(users, roomJS, 2, userInRoomDiv);
+}
 
-    roomJS.innerHTML = ''
-    users.filter(user => user.position == 2).forEach(user => roomJS.innerHTML += userInRoomDiv(user.name, user.color))
+const displayUsers = (users, room, position, div) => {
+    room.innerHTML = ''
+    users.filter(user => user.position == position).forEach(user => room.innerHTML += div(user.name, user.color))
 }
 
 // Rejoindre la partie
