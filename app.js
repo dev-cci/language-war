@@ -40,48 +40,25 @@ const updateUsers = async () => {
     const users = await getUsers()
 
     const lobby = document.querySelector('.lobby')
+    const roomPHP = document.querySelector('.zone-php')
+    const roomJS = document.querySelector('.zone-js')
+
     lobby.innerHTML = ''
     users.filter(user => user.position == 0).forEach(user => lobby.innerHTML += userInLobbyDiv(user.name, user.color))
 
-    const roomPHP = document.querySelector('.zone-php')
     roomPHP.innerHTML = ''
     users.filter(user => user.position == 1).forEach(user => roomPHP.innerHTML += userInRoomDiv(user.name, user.color))
 
-    const roomJS = document.querySelector('.zone-js')
     roomJS.innerHTML = ''
     users.filter(user => user.position == 2).forEach(user => roomJS.innerHTML += userInRoomDiv(user.name, user.color))
 }
 
 // Rejoindre la partie
-const joinLobby = () => {
-    const userInput = document.querySelector('input#nickname').value
+const join = room => {
+    const userInput = document.querySelector('input#nickname')
 
     if (userInput) {
-        sendUserData(userInput, 0)
-    }
-    else {
-        console.log("no username")
-    }
-}
-
-// Rejoindre la room PHP
-const joinRoomPHP = () => {
-    const userInput = document.querySelector('input#nickname').value
-
-    if (userInput) {
-        sendUserData(userInput, 1)
-    }
-    else {
-        console.log("no username")
-    }
-}
-
-// Rejoindre la room JS
-const joinRoomJS = () => {
-    const userInput = document.querySelector('input#nickname').value
-
-    if (userInput) {
-        sendUserData(userInput, 2)
+        sendUserData(userInput.value, room)
     }
     else {
         console.log("no username")
@@ -95,7 +72,6 @@ const leave = () => {
     sendUserData(userInput.value, -1)
 
     userInput.value = ''
-
 }
 
 setInterval(() => {
