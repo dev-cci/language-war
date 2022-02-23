@@ -57,13 +57,13 @@ const updateUsers = async () => {
 }
 
 // Rejoindre la partie
-const joinLobby = async () => {
+const join = async room => {
     const userInput = document.querySelector('input#nickname').value
 
     if (userInput) {
         let userData = new FormData()
         userData.append('username', userInput)
-        userData.append('position', 0)
+        userData.append('position', room)
         userData.append('color', getRandomColor())
 
         await fetch('./send_user_data.php', {
@@ -77,3 +77,28 @@ const joinLobby = async () => {
         console.log("no username")
     }
 }
+
+// Rejoindre la partie
+const leave = async () => {
+    const userInput = document.querySelector('input#nickname')
+
+    let userData = new FormData()
+    userData.append('username', userInput.value)
+    userData.append('position', -1)
+    userData.append('color', getRandomColor())
+
+    await fetch('./send_user_data.php', {
+        method: 'POST',
+        body: userData
+    })
+
+    updateUsers()
+
+    userInput.value = ""
+}
+
+setInterval(() => {
+    updateUsers()
+}, 1000);
+
+updateUsers()
