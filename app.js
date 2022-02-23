@@ -57,7 +57,7 @@ const updateUsers = async () => {
 const join = room => {
     const userInput = document.querySelector('input#nickname')
 
-    if (userInput) {
+    if (userInput.value) {
         sendUserData(userInput.value, room)
     }
     else {
