@@ -2,7 +2,6 @@
 
 include('./database.php');
 
-
 $isDeletedOrdered = $_POST['position'] == -1;
 $doesUserExist =  $db->query("SELECT name FROM users WHERE name = '". $_POST['username'] ."'")->fetch();
 
@@ -14,7 +13,6 @@ function deleteUser($db) {
     $deleteUserStatement = $db->prepare("DELETE FROM users WHERE name = ?");
     $deleteUserStatement->execute([$_POST['username']]);
 }
-
 
 function updateUser($db) {
     $updateUserStatement = $db->prepare("UPDATE users SET position = ? WHERE name = ?");
