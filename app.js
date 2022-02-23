@@ -55,3 +55,25 @@ const updateUsers = async () => {
     roomJS.innerHTML = ''
     users.filter(user => user.position == 2).forEach(user => roomJS.innerHTML += userInRoomDiv(user.name, user.color))
 }
+
+// Rejoindre la partie
+const joinLobby = async () => {
+    const userInput = document.querySelector('input#nickname').value
+
+    if (userInput) {
+        let userData = new FormData()
+        userData.append('username', userInput)
+        userData.append('position', 0)
+        userData.append('color', getRandomColor())
+
+        await fetch('./send_user_data.php', {
+            method: 'POST',
+            body: userData
+        })
+
+        updateUsers()
+    }
+    else {
+        console.log("no username")
+    }
+}
